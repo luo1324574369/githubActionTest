@@ -10,7 +10,7 @@ jobs:
 
   build:
     # 在ubuntu上进行构建操作
-    runs-on: ubuntu-lates
+    runs-on: ubuntu-latest
 
     steps:
       # 拉取代码
