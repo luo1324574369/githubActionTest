@@ -14,7 +14,7 @@ jobs:
 
     steps:
       # 拉取代码
-      - uses:actions/checkout@v2
+      - uses: actions/checkout@v2
 
       # 设置你项目的golang版本
       - name: Set up Go
@@ -34,20 +34,20 @@ jobs:
       # 将编译出的二进制文件 scp 到你的VPS服务器
       - name: SCP Files
         uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.REMOTE_HOST }}  # Secrets中的配置：vps IP地址
-        username: ${{ secrets.REMOTE_USER }}  # Secrets中的配置：vps 登录用户名
-        port: ${{ secrets.REMOTE_PORT }} # Secrets中的配置：vps 端口
-        key: ${{ secrets.SERVER_SSH_KEY }} # Secrets中的配置：vps 上创建的ssh key的私钥内容
-        source: 'app'  # 编译出的二进制文件名
-        target: ${{ secrets.REMOTE_TARGET }} # Secrets中的配置：scp 到 vps 上的的目录
+        with:
+          host: ${{ secrets.REMOTE_HOST }}  # Secrets中的配置：vps IP地址
+          username: ${{ secrets.REMOTE_USER }}  # Secrets中的配置：vps 登录用户名
+          port: ${{ secrets.REMOTE_PORT }} # Secrets中的配置：vps 端口
+          key: ${{ secrets.SERVER_SSH_KEY }} # Secrets中的配置：vps 上创建的ssh key的私钥内容
+          source: 'app'  # 编译出的二进制文件名
+          target: ${{ secrets.REMOTE_TARGET }} # Secrets中的配置：scp 到 vps 上的的目录
 
           # 通过ssh远程执行命令重启vps上的服务
-          - name: SSH Remote Commands
-            uses: appleboy/ssh-action@master
-            with:
-              host: ${{ secrets.REMOTE_HOST }} # Secrets中的配置：vps IP地址
-              username: ${{ secrets.REMOTE_USER }} # Secrets中的配置：vps 登录用户名
-              port: ${{ secrets.REMOTE_PORT }} # Secrets中的配置：vps 端口
-              key: ${{ secrets.SERVER_SSH_KEY }} # Secrets中的配置：vps 上创建的ssh key的私钥内容
-              script: ll # Secrets中的配置：scp二进制文件到vps服务器上后需要执行的相关shell命令重启服务
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }} # Secrets中的配置：vps IP地址
+          username: ${{ secrets.REMOTE_USER }} # Secrets中的配置：vps 登录用户名
+          port: ${{ secrets.REMOTE_PORT }} # Secrets中的配置：vps 端口
+          key: ${{ secrets.SERVER_SSH_KEY }} # Secrets中的配置：vps 上创建的ssh key的私钥内容
+          script: ll # Secrets中的配置：scp二进制文件到vps服务器上后需要执行的相关shell命令重启服务
